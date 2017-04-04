@@ -36,18 +36,22 @@ before_script:
   - wget http://downloads.sourceforge.net/openturns/openturns/openturns-1.9/dev/openturns-developers-windeps-1.9.tar.gz -P /tmp
 
 script:
-  - mkdir -p openturns/distro/windows
-  - pushd openturns/distro/windows
+  - mkdir -p ${HOME}/build/openturns/build/openturns/distro/windows
+  - pushd ${HOME}/build/openturns/build/openturns/distro/windows
   - tar xzf /tmp/openturns-developers-windeps-1.9.tar.gz
+  - wget https://raw.githubusercontent.com/openturns/openturns/v1.9rc1/distro/windows/Makefile
+  - make PYBASEVER=${PYBASEVER} ARCH=${ARCH} ot-check-compiler
   - popd
   - wget https://github.com/openturns/build/releases/download/v1.9rc1/openturns-mingw-1.9rc1-py${PYBASEVER}-${ARCH}.tar.bz2 -P /tmp
-  - mkdir -p openturns/build
-  - pushd openturns/build
+  - mkdir -p ${HOME}/build/openturns/build/openturns/build-${ARCH}-w64-mingw32
+  - pushd ${HOME}/build/openturns/build/openturns/build-${ARCH}-w64-mingw32
   - tar xjf /tmp/openturns-mingw-1.9rc1-py${PYBASEVER}-${ARCH}.tar.bz2
   - popd
   - export TRAVIS_BUILD_DIR
+  - export PYBASEVER
+  - export ARCH
   - ./build-module.sh otfftw 0.4
-  - ./build-module.sh otlm 0.2
+  - ./build-module.sh otlm 0.4
   - ./build-module.sh otmorris 0.2
   - ./build-module.sh otpmml 1.4
   - ./build-module.sh otrobopt 0.2
@@ -64,13 +68,16 @@ env:
 
 deploy:
   provider: releases
+  api_key:
+    secure: HvJyLF06qPvHC+vn6x8Kf2d9p5oxlxlGtQs9HcFdaVBBXahNs0/T3oEYZQYcmzHvNEWzZ1t8+1BEuddhsw60H7xIEwV3SiXyvxapfaMMdQQVtQg+lAK9j9ulMnMLDO5MupjJ5B1UeBTH2IWBTro4rCwaUPLiZMWlM/FCYJf0pmgVyVhl7ns88vfJFjxZKwaf8IhSS9+JjZKnfVgOlonJGNkdUWuqsrv3gGvVZElfYzA9NilmN1FVYuOPhiLe0Ok2l42mVrXQBFxgVD48gK+NXezQwDlr+W8Q0aWJ85sVS+C2MYNypZBm8WinF1X1DFZ39mhi/lawF0m4FDQR2f/Br1JmhlUREMZ+MmcXIur0W/453+juoncI7gkM7y41Lc023JVSCfoWKPcDsR1Vyr01IQ1cKTFnZZ0RnVaVAR50Dc2uXQgv+TkNe8GNVNIJ4hnCAfjftSj08bBT3ECx04FFDOT0Y8B72vHZgbtPiqwT25sJtDbFeZAlTQEIbZq+4wP7CfGkCSVJQvXQ2NXN2xzLQLmpwlaLY2ofI5bNy/W5bhIGtLeFdj850McXW85qsMU17MmxbZCSRlBTgkpmE37bQbc8P8PSQW2LEx7DSR5g8AwHimdXRyZRUWOy282w9KBCOgsnlXDPDROphjdYyFRUouLsGioDwju2FpPIqCF/RZI=
   file:
     - ${TRAVIS_BUILD_DIR}/otfftw-0.4-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otlm-0.2-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otlm-0.4-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otmorris-0.2-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otpmml-1.4-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otrobopt-0.2-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otsvm-0.3-py${PYBASEVER}-${ARCH}.exe
   repo: openturns/build-modules
+  skip_cleanup: true
   on:
     tags: true
