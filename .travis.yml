@@ -1,0 +1,76 @@
+language: cpp
+sudo: required
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - nsis
+      - cmake
+      - xvfb
+      - texlive-latex-recommended
+      - texlive-fonts-recommended
+      - texlive-latex-extra
+      - texlive-science
+      - dvipng
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-wine/ppa -y
+  - sudo dpkg --add-architecture i386 && sudo rm /etc/apt/sources.list.d/google-chrome.list
+  - sudo apt-get update -q
+
+install:
+  - sudo apt-get install wine1.8 -y
+  - sudo wget -N https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks -P /usr/bin
+  # latest swig
+  - git clone https://github.com/swig/swig.git
+  - pushd swig
+  - git checkout rel-3.0.12
+  - ./autogen.sh
+  - ./configure --without-alllang --prefix=/usr
+  - make -j2
+  - sudo make install
+  - popd
+
+before_script:
+  - wget http://downloads.sourceforge.net/openturns/openturns/openturns-1.9/dev/openturns-developers-windeps-1.9.tar.gz -P /tmp
+
+script:
+  - mkdir -p openturns/distro/windows
+  - pushd openturns/distro/windows
+  - tar xzf /tmp/openturns-developers-windeps-1.9.tar.gz
+  - popd
+  - wget https://github.com/openturns/build/releases/download/v1.9rc1/openturns-mingw-1.9rc1-py${PYBASEVER}-${ARCH}.tar.bz2 -P /tmp
+  - mkdir -p openturns/build
+  - pushd openturns/build
+  - tar xjf /tmp/openturns-mingw-1.9rc1-py${PYBASEVER}-${ARCH}.tar.bz2
+  - popd
+  - export TRAVIS_BUILD_DIR
+  - ./build-module.sh otfftw 0.4
+  - ./build-module.sh otlm 0.2
+  - ./build-module.sh otmorris 0.2
+  - ./build-module.sh otpmml 1.4
+  - ./build-module.sh otrobopt 0.2
+  - ./build-module.sh otsvm 0.3
+
+env:
+  matrix:
+    - PYBASEVER=2.7 ARCH=i686
+    - PYBASEVER=2.7 ARCH=x86_64
+    - PYBASEVER=3.5 ARCH=i686
+    - PYBASEVER=3.5 ARCH=x86_64
+    - PYBASEVER=3.6 ARCH=i686
+    - PYBASEVER=3.6 ARCH=x86_64
+
+deploy:
+  provider: releases
+  file:
+    - ${TRAVIS_BUILD_DIR}/otfftw-0.4-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otlm-0.2-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otmorris-0.2-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otpmml-1.4-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otrobopt-0.2-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otsvm-0.3-py${PYBASEVER}-${ARCH}.exe
+  repo: openturns/build-modules
+  on:
+    tags: true
