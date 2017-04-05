@@ -52,6 +52,7 @@ script:
   - export ARCH
   - ./build-module.sh otfftw 0.4
   - ./build-module.sh otlm 0.4
+  - ./build-module.sh otmixmod 0.5
   - ./build-module.sh otmorris 0.2
   - ./build-module.sh otpmml 1.4
   - ./build-module.sh otrobopt 0.2
@@ -73,6 +74,7 @@ deploy:
   file:
     - ${TRAVIS_BUILD_DIR}/otfftw-0.4-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otlm-0.4-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otmixmod-0.5-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otmorris-0.2-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otpmml-1.4-py${PYBASEVER}-${ARCH}.exe
     - ${TRAVIS_BUILD_DIR}/otrobopt-0.2-py${PYBASEVER}-${ARCH}.exe
