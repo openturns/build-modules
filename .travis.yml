@@ -81,5 +81,6 @@ deploy:
     - ${TRAVIS_BUILD_DIR}/otsvm-0.3-py${PYBASEVER}-${ARCH}.exe
   repo: openturns/build-modules
   skip_cleanup: true
+  overwrite: true
   on:
     tags: true
