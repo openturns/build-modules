@@ -1,6 +1,18 @@
 language: cpp
 sudo: required
-dist: trusty
+
+env:
+  global:
+    - VERSION=1.10
+
+matrix:
+  include:
+    - env: PYBASEVER=2.7 ARCH=i686
+    - env: PYBASEVER=2.7 ARCH=x86_64
+    - env: PYBASEVER=3.5 ARCH=i686
+    - env: PYBASEVER=3.5 ARCH=x86_64
+    - env: PYBASEVER=3.6 ARCH=i686
+    - env: PYBASEVER=3.6 ARCH=x86_64
 
 addons:
   apt:
@@ -39,13 +51,13 @@ script:
   - mkdir -p ${HOME}/build/openturns/build/openturns/distro/windows
   - pushd ${HOME}/build/openturns/build/openturns/distro/windows
   - tar xzf /tmp/openturns-developers-windeps-1.10.tar.gz
-  - wget https://raw.githubusercontent.com/openturns/openturns/v1.10rc1/distro/windows/Makefile
+  - wget https://raw.githubusercontent.com/openturns/openturns/v${VERSION}/distro/windows/Makefile
   - make PYBASEVER=${PYBASEVER} ARCH=${ARCH} ot-check-compiler
   - popd
-  - wget https://github.com/openturns/build/releases/download/v1.10rc1/openturns-mingw-1.10rc1-py${PYBASEVER}-${ARCH}.tar.bz2 -P /tmp
+  - wget https://github.com/openturns/build/releases/download/v${VERSION}/openturns-mingw-${VERSION}-py${PYBASEVER}-${ARCH}.tar.bz2 -P /tmp
   - mkdir -p ${HOME}/build/openturns/build/openturns/build-${ARCH}-w64-mingw32
   - pushd ${HOME}/build/openturns/build/openturns/build-${ARCH}-w64-mingw32
-  - tar xjf /tmp/openturns-mingw-1.10rc1-py${PYBASEVER}-${ARCH}.tar.bz2
+  - tar xjf /tmp/openturns-mingw-${VERSION}-py${PYBASEVER}-${ARCH}.tar.bz2
   - popd
   - export TRAVIS_BUILD_DIR
   - export PYBASEVER
@@ -57,15 +69,6 @@ script:
   - ./build-module.sh otpmml 1.4
   - ./build-module.sh otrobopt 0.2
   - ./build-module.sh otsvm 0.3
-
-env:
-  matrix:
-    - PYBASEVER=2.7 ARCH=i686
-    - PYBASEVER=2.7 ARCH=x86_64
-    - PYBASEVER=3.5 ARCH=i686
-    - PYBASEVER=3.5 ARCH=x86_64
-    - PYBASEVER=3.6 ARCH=i686
-    - PYBASEVER=3.6 ARCH=x86_64
 
 deploy:
   provider: releases
