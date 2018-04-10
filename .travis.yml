@@ -3,7 +3,7 @@ sudo: required
 
 env:
   global:
-    - VERSION=1.10
+    - VERSION=1.11rc1
 
 matrix:
   include:
@@ -62,26 +62,26 @@ script:
   - export TRAVIS_BUILD_DIR
   - export PYBASEVER
   - export ARCH
-  - ./build-module.sh otfftw 0.4
-  - ./build-module.sh otlm 0.5
-  - ./build-module.sh otmixmod 0.5
-  - ./build-module.sh otmorris 0.2
-  - ./build-module.sh otpmml 1.4
-  - ./build-module.sh otrobopt 0.2
-  - ./build-module.sh otsvm 0.3
+  - ./build-module.sh otfftw 0.5
+  - ./build-module.sh otlm 0.6
+  - ./build-module.sh otmixmod 0.6
+  - ./build-module.sh otmorris 0.4
+  - ./build-module.sh otpmml 1.5
+  - ./build-module.sh otrobopt 0.3
+  - ./build-module.sh otsvm 0.4
 
 deploy:
   provider: releases
   api_key:
     secure: HvJyLF06qPvHC+vn6x8Kf2d9p5oxlxlGtQs9HcFdaVBBXahNs0/T3oEYZQYcmzHvNEWzZ1t8+1BEuddhsw60H7xIEwV3SiXyvxapfaMMdQQVtQg+lAK9j9ulMnMLDO5MupjJ5B1UeBTH2IWBTro4rCwaUPLiZMWlM/FCYJf0pmgVyVhl7ns88vfJFjxZKwaf8IhSS9+JjZKnfVgOlonJGNkdUWuqsrv3gGvVZElfYzA9NilmN1FVYuOPhiLe0Ok2l42mVrXQBFxgVD48gK+NXezQwDlr+W8Q0aWJ85sVS+C2MYNypZBm8WinF1X1DFZ39mhi/lawF0m4FDQR2f/Br1JmhlUREMZ+MmcXIur0W/453+juoncI7gkM7y41Lc023JVSCfoWKPcDsR1Vyr01IQ1cKTFnZZ0RnVaVAR50Dc2uXQgv+TkNe8GNVNIJ4hnCAfjftSj08bBT3ECx04FFDOT0Y8B72vHZgbtPiqwT25sJtDbFeZAlTQEIbZq+4wP7CfGkCSVJQvXQ2NXN2xzLQLmpwlaLY2ofI5bNy/W5bhIGtLeFdj850McXW85qsMU17MmxbZCSRlBTgkpmE37bQbc8P8PSQW2LEx7DSR5g8AwHimdXRyZRUWOy282w9KBCOgsnlXDPDROphjdYyFRUouLsGioDwju2FpPIqCF/RZI=
   file:
-    - ${TRAVIS_BUILD_DIR}/otfftw-0.4-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otlm-0.5-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otmixmod-0.5-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otmorris-0.2-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otpmml-1.4-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otrobopt-0.2-py${PYBASEVER}-${ARCH}.exe
-    - ${TRAVIS_BUILD_DIR}/otsvm-0.3-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otfftw-0.5-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otlm-0.6-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otmixmod-0.6-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otmorris-0.4-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otpmml-1.5-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otrobopt-0.3-py${PYBASEVER}-${ARCH}.exe
+    - ${TRAVIS_BUILD_DIR}/otsvm-0.4-py${PYBASEVER}-${ARCH}.exe
   repo: openturns/build-modules
   skip_cleanup: true
   overwrite: true

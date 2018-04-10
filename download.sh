@@ -2,8 +2,8 @@
 
 user=$1
 
-release=1.10
-for _basename in otpmml-1.4 otsvm-0.3 otrobopt-0.2 otmixmod-0.5 otmorris-0.2 otlm-0.5 otfftw-0.4
+release=1.11rc1
+for _basename in otpmml-1.5 otsvm-0.4 otrobopt-0.3 otmixmod-0.6 otmorris-0.4 otlm-0.6 otfftw-0.5
 do
   project=`echo "${_basename}" | cut -d '-' -f 1`
   version=`echo "${_basename}" | cut -d '-' -f 2`
