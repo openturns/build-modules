@@ -43,13 +43,14 @@ do
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYMAJMIN}-bin \
     -DPYTHON_SITE_PACKAGES=Lib/site-packages \
-    -DSWIG_DIR=/usr/share/swig/3.0.12/ \
+    -DSWIG_DIR=`swig -swiglib` \
     -DUSE_SPHINX=OFF \
     .
   # we set SWIG_DIR manually here because its not set with our workaround (not to be used with cmake>=3: https://github.com/openturns/ottemplate/pull/46)
   make generate_docstrings || echo "no docstring"  # some modules are not in sync with https://github.com/openturns/ottemplate/pull/59
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
+  cp ${PREFIX}/bin/*.dll python/test && ctest -R pyinstall --output-on-failure --timeout 100 ${MAKEFLAGS}
   if test "${pkgname}" = "otfftw"
   then
     cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/bin
