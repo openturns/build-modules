@@ -50,7 +50,7 @@ do
   make generate_docstrings || echo "no docstring"  # some modules are not in sync with https://github.com/openturns/ottemplate/pull/59
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
-  cp ${PREFIX}/bin/*.dll python/test && ctest -R pyinstall --output-on-failure --timeout 100 ${MAKEFLAGS}
+  cp ${PREFIX}/bin/*.dll python/test && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}
   if test "${pkgname}" = "otfftw"
   then
     cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/bin
