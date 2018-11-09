@@ -28,13 +28,12 @@ curl -L https://github.com/openturns/build/releases/download/v${OTVERSION}/opent
 sudo cp -r install/* ${MINGW_PREFIX}
 
 # for each module
-for pkgnamever in otfftw-0.5 otlm-0.6 otmixmod-0.6 otmorris-0.4 otpmml-1.5 otrobopt-0.3 otsubsetinverse-1.2 otsvm-0.4
+for pkgnamever in otfftw-0.6 otlm-0.7 otmixmod-0.7 otmorris-0.5 otpmml-1.6 otrobopt-0.4 otsubsetinverse-1.3 otsvm-0.5
 do
   pkgname=`echo ${pkgnamever}|cut -d "-" -f1`
   pkgver=`echo ${pkgnamever}|cut -d "-" -f2`
   cd
-  git clone https://github.com/openturns/${pkgname}.git
-  cd ${pkgname}
+  git clone https://github.com/openturns/${pkgname}.git && cd ${pkgname}
   git checkout v${pkgver}
   PREFIX=$PWD/install
   CXXFLAGS="-D_hypot=hypot" ${ARCH}-w64-mingw32-cmake \
@@ -43,11 +42,8 @@ do
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYMAJMIN}-bin \
     -DPYTHON_SITE_PACKAGES=Lib/site-packages \
-    -DSWIG_DIR=`swig -swiglib` \
     -DUSE_SPHINX=OFF \
     .
-  # we set SWIG_DIR manually here because its not set with our workaround (not to be used with cmake>=3: https://github.com/openturns/ottemplate/pull/46)
-  make generate_docstrings || echo "no docstring"  # some modules are not in sync with https://github.com/openturns/ottemplate/pull/59
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
   cp ${PREFIX}/bin/*.dll python/test && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}
