@@ -10,9 +10,9 @@ usage()
 
 test $# -ge 3 || usage
 
-
 sudo pacman -Sy --noconfirm mingw-w64-fftw  # for otfftw
 sudo pacman -Sy --noconfirm texlive-latexextra  # for modules that still have a PDF doc
+#aurman -S --noconfirm --noedit mingw-w64-agrum  # for otagrum
 
 OTVERSION=$1
 PYBASEVER=$2
@@ -36,7 +36,7 @@ do
   git clone https://github.com/openturns/${pkgname}.git && cd ${pkgname}
   git checkout v${pkgver}
   PREFIX=$PWD/install
-  CXXFLAGS="-D_hypot=hypot" ${ARCH}-w64-mingw32-cmake \
+  ${ARCH}-w64-mingw32-cmake \
     -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=lib \
     -DPYTHON_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
@@ -47,10 +47,9 @@ do
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
   cp ${PREFIX}/bin/*.dll python/test && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}
-  if test "${pkgname}" = "otfftw"
-  then
-    cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/bin
-  fi
+  if test "${pkgname}" = "otfftw"; then cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/bin; fi
+  if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/bin; fi
+
   cd distro/windows
   makensis -DMODULE_PREFIX=${PREFIX} -DMODULE_VERSION=${pkgver} -DOPENTURNS_VERSION=${OTVERSION} -DPYBASEVER=${PYBASEVER} -DPYBASEVER_NODOT=${PYMAJMIN} -DARCH=${ARCH} installer.nsi
 
