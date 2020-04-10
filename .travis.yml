@@ -6,11 +6,10 @@ services:
 
 env:
   global:
-    - VERSION=1.14
+    - OTVERSION=1.15rc1
 
 matrix:
   include:
-    - env: PYVER=2.7
     - env: PYVER=3.6
     - env: PYVER=3.7
     - env: PYVER=3.8
@@ -19,7 +18,7 @@ install:
   - docker pull openturns/archlinux-mingw
 
 script:
-  - docker run -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/run_docker_build.sh ${VERSION} ${PYVER} x86_64 `id -u` `id -g`
+  - docker run -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/run_docker_build.sh ${OTVERSION} ${PYVER} `id -u` `id -g`
 
 deploy:
   provider: releases

@@ -8,19 +8,17 @@ usage()
   exit 1
 }
 
-test $# -ge 3 || usage
+test $# -ge 2 || usage
 
-sudo pacman -Sy --noconfirm mingw-w64-fftw  # for otfftw
-sudo pacman -Sy --noconfirm texlive-latexextra  # for modules that still have a PDF doc
-#aurman -S --noconfirm --noedit mingw-w64-agrum  # for otagrum
+sudo pacman -Sy --noconfirm mingw-w64-fftw mingw-w64-agrum  # for otfftw, otagrum
 
 OTVERSION=$1
 PYBASEVER=$2
 PYMAJMIN=${PYBASEVER:0:1}${PYBASEVER:2:1}
-ARCH=$3
+ARCH=x86_64
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
-uid=$4
-gid=$5
+uid=$3
+gid=$4
 
 # fetch openturns mingw binaries
 cd /tmp
@@ -28,16 +26,15 @@ curl -L https://github.com/openturns/build/releases/download/v${OTVERSION}/opent
 sudo cp -r install/* ${MINGW_PREFIX}
 
 # for each module
-for pkgnamever in otfftw-0.8 otmixmod-0.9 otmorris-0.7 otpmml-1.8 otrobopt-0.6 otsubsetinverse-1.5 otsvm-0.7
+for pkgnamever in otagrum-0.2 otfftw-0.9 otmixmod-0.10 otmorris-0.8 otpmml-1.9 otrobopt-0.7 otsubsetinverse-1.6 otsvm-0.8
 do
   pkgname=`echo ${pkgnamever}|cut -d "-" -f1`
   pkgver=`echo ${pkgnamever}|cut -d "-" -f2`
   cd
-  git clone https://github.com/openturns/${pkgname}.git && cd ${pkgname}
-  git checkout v${pkgver}
+  curl -L https://github.com/openturns/${pkgname}/archive/v${pkgver}.tar.gz | tar xz && cd ${pkgname}-${pkgver}
   PREFIX=$PWD/install
   ${ARCH}-w64-mingw32-cmake \
-    -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX} \
     -DPYTHON_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYMAJMIN}-bin \
