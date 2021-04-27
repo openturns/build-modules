@@ -1,12 +1,11 @@
 language: generic
-sudo: required
 
 services:
   - docker
 
 env:
   global:
-    - OTVERSION=1.16rc1
+    - OTVERSION=1.17rc1
 
 matrix:
   include:

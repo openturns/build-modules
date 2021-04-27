@@ -26,7 +26,7 @@ curl -L https://github.com/openturns/build/releases/download/v${OTVERSION}/opent
 sudo cp -r install/* ${MINGW_PREFIX}
 
 # for each module
-for pkgnamever in otagrum-0.3 otfftw-0.10 otmixmod-0.11 otmorris-0.9 otpmml-1.10 otrobopt-0.8 otsubsetinverse-1.7 otsvm-0.9
+for pkgnamever in otagrum-0.4 otfftw-0.11 otmixmod-0.12 otmorris-0.10 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
 do
   pkgname=`echo ${pkgnamever}|cut -d "-" -f1`
   pkgver=`echo ${pkgnamever}|cut -d "-" -f2`
@@ -38,14 +38,13 @@ do
     -DPYTHON_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \
     -DPYTHON_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
     -DPYTHON_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYMAJMIN}-bin \
-    -DPYTHON_SITE_PACKAGES=Lib/site-packages \
-    -DUSE_SPHINX=OFF \
+    -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
     .
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
   if test "${pkgname}" = "otfftw"; then cp -v ${MINGW_PREFIX}/bin/libfftw*.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
   if test "${pkgname}" = "otagrum"; then cp -v ${MINGW_PREFIX}/bin/libagrum.dll ${PREFIX}/Lib/site-packages/${pkgname}; fi
-  if test "${pkgname}" != "otagrum"; then cp ${PREFIX}/bin/lib${pkgname}.dll ${PREFIX}/Lib/site-packages/${pkgname} && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}; fi
+#   if test "${pkgname}" != "otagrum"; then cp ${PREFIX}/bin/lib${pkgname}.dll ${PREFIX}/Lib/site-packages/${pkgname} && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}; fi
 
   cd distro/windows
   makensis -DMODULE_PREFIX=${PREFIX} -DMODULE_VERSION=${pkgver} -DOPENTURNS_VERSION=${OTVERSION} -DPYBASEVER=${PYBASEVER} -DPYBASEVER_NODOT=${PYMAJMIN} -DARCH=${ARCH} installer.nsi
