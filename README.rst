@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/openturns/build-modules.svg
-    :target: https://travis-ci.org/openturns/build-modules
+.. image:: https://github.com/openturns/build-modules/actions/workflows/build.yml/badge.svg?branch=master
+    :target: https://github.com/openturns/build-modules/actions/workflows/build.yml
 
 Scripts to build windows binaries of modules.
 

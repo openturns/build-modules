@@ -1,0 +1,28 @@
+name: Release
+
+on: push
+
+jobs:
+  mingw:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [1.18rc1]
+        pyver: [3.6, 3.7, 3.8, 3.9, "3.10"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: docker pull openturns/archlinux-mingw && docker run -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/run_docker_build.sh ${{ matrix.version }} ${{ matrix.pyver }} `id -u` `id -g`
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            otagrum-0.5-py${{ matrix.pyver }}-x86_64.exe
+            otfftw-0.11-py${{ matrix.pyver }}-x86_64.exe
+            otmixmod-0.12-py${{ matrix.pyver }}-x86_64.exe
+            otmorris-0.11-py${{ matrix.pyver }}-x86_64.exe
+            otpmml-1.11-py${{ matrix.pyver }}-x86_64.exe
+            otrobopt-0.9-py${{ matrix.pyver }}-x86_64.exe
+            otsubsetinverse-1.8-py${{ matrix.pyver }}-x86_64.exe
+            otsvm-0.10-py${{ matrix.pyver }}-x86_64.exe
