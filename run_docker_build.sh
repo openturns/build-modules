@@ -26,7 +26,7 @@ curl -L https://github.com/openturns/build/releases/download/v${OTVERSION}/opent
 sudo cp -r install/* ${MINGW_PREFIX}
 
 # for each module
-for pkgnamever in otagrum-0.5 otfftw-0.11 otmixmod-0.12 otmorris-0.11 otpmml-1.11 otrobopt-0.9 otsubsetinverse-1.8 otsvm-0.10
+for pkgnamever in otagrum-0.5 otfftw-0.11 otmixmod-0.12 otmorris-0.12 otpmml-1.11 otrobopt-0.10 otsubsetinverse-1.8 otsvm-0.10
 do
   pkgname=`echo ${pkgnamever}|cut -d "-" -f1`
   pkgver=`echo ${pkgnamever}|cut -d "-" -f2`
