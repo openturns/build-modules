@@ -47,11 +47,12 @@ do
   if test "${pkgname}" != "otagrum"; then cp ${PREFIX}/bin/lib${pkgname}.dll ${PREFIX}/Lib/site-packages/${pkgname} && ctest -R pyinstall --output-on-failure --timeout 200 ${MAKEFLAGS}; fi
 
   cd distro/windows
+  tar cjf ${pkgname}-${pkgver}-mingw-py${PYBASEVER}-${ARCH}.tar.bz2 --directory ${PREFIX}/.. `basename ${PREFIX}`
   makensis -DMODULE_PREFIX=${PREFIX} -DMODULE_VERSION=${pkgver} -DOPENTURNS_VERSION=${OTVERSION} -DPYBASEVER=${PYBASEVER} -DPYBASEVER_NODOT=${PYMAJMIN} -DARCH=${ARCH} installer.nsi
 
   if test -n "${uid}" -a -n "${gid}"
   then
-    sudo cp -v ${pkgname}-${pkgver}-py${PYBASEVER}-${ARCH}.exe /io
+    sudo cp -v *.tar.bz2 *.exe /io
     sudo chown ${uid}:${gid} /io/${pkgname}-${pkgver}-py${PYBASEVER}-${ARCH}.exe
   fi
 done
