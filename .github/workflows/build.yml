@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ['1.20']
+        version: ['1.21rc1']
         pyver: ['3.8', '3.9', '3.10', '3.11']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         run: docker pull openturns/archlinux-mingw && docker run -e MAKEFLAGS='-j2' -v `pwd`:/io openturns/archlinux-mingw /io/run_docker_build.sh ${{ matrix.version }} ${{ matrix.pyver }} `id -u` `id -g`
       - name: Release
@@ -18,11 +18,10 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            otagrum-0.7-py${{ matrix.pyver }}-x86_64.exe
-            otfftw-0.12-py${{ matrix.pyver }}-x86_64.exe
-            otmixmod-0.13-py${{ matrix.pyver }}-x86_64.exe
-            otmorris-0.13-py${{ matrix.pyver }}-x86_64.exe
-            otpmml-1.12-py${{ matrix.pyver }}-x86_64.exe
-            otrobopt-0.11-py${{ matrix.pyver }}-x86_64.exe
-            otsubsetinverse-1.9-py${{ matrix.pyver }}-x86_64.exe
-            otsvm-0.11-py${{ matrix.pyver }}-x86_64.exe
+            otagrum-0.8-py${{ matrix.pyver }}-x86_64.exe
+            otfftw-0.13-py${{ matrix.pyver }}-x86_64.exe
+            otmixmod-0.14-py${{ matrix.pyver }}-x86_64.exe
+            otmorris-0.14-py${{ matrix.pyver }}-x86_64.exe
+            otrobopt-0.12-py${{ matrix.pyver }}-x86_64.exe
+            otsubsetinverse-1.10-py${{ matrix.pyver }}-x86_64.exe
+            otsvm-0.12-py${{ matrix.pyver }}-x86_64.exe
