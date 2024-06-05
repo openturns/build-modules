@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ['1.21rc1']
-        pyver: ['3.8', '3.9', '3.10', '3.11']
+        version: ['1.23']
+        pyver: ['3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v3
       - name: Build
@@ -18,10 +18,9 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            otagrum-0.8-py${{ matrix.pyver }}-x86_64.exe
-            otfftw-0.13-py${{ matrix.pyver }}-x86_64.exe
-            otmixmod-0.14-py${{ matrix.pyver }}-x86_64.exe
-            otmorris-0.14-py${{ matrix.pyver }}-x86_64.exe
-            otrobopt-0.12-py${{ matrix.pyver }}-x86_64.exe
-            otsubsetinverse-1.10-py${{ matrix.pyver }}-x86_64.exe
-            otsvm-0.12-py${{ matrix.pyver }}-x86_64.exe
+            otagrum-0.10-py${{ matrix.pyver }}-x86_64.exe
+            otfftw-0.15-py${{ matrix.pyver }}-x86_64.exe
+            otmixmod-0.17-py${{ matrix.pyver }}-x86_64.exe
+            otmorris-0.16-py${{ matrix.pyver }}-x86_64.exe
+            otrobopt-0.14-py${{ matrix.pyver }}-x86_64.exe
+            otsvm-0.14-py${{ matrix.pyver }}-x86_64.exe
