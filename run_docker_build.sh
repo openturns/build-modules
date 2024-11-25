@@ -26,7 +26,7 @@ curl -L https://github.com/openturns/build/releases/download/v${OTVERSION}/opent
 sudo cp -r install/* ${MINGW_PREFIX}
 
 # for each module
-for pkgnamever in otagrum-0.10 otfftw-0.15 otmixmod-0.17 otmorris-0.16 otrobopt-0.14 otsvm-0.14
+for pkgnamever in otagrum-0.11 otfftw-0.16 otmixmod-0.18 otmorris-0.17 otrobopt-0.15 otsvm-0.15
 do
   pkgname=`echo ${pkgnamever}|cut -d "-" -f1`
   pkgver=`echo ${pkgnamever}|cut -d "-" -f2`
@@ -39,7 +39,6 @@ do
     -DPython_INCLUDE_DIR=${MINGW_PREFIX}/include/python${PYMAJMIN} \
     -DPython_LIBRARY=${MINGW_PREFIX}/lib/libpython${PYMAJMIN}.dll.a \
     -DPython_EXECUTABLE=/usr/bin/${ARCH}-w64-mingw32-python${PYMAJMIN}-bin \
-    -DUSE_SPHINX=OFF -DBUILD_DOC=OFF \
     .
   make install
   ${ARCH}-w64-mingw32-strip --strip-unneeded ${PREFIX}/bin/*.dll ${PREFIX}/Lib/site-packages/${pkgname}/*.pyd
